@@ -1,0 +1,231 @@
+openapi: 3.0.1
+info:
+  title: ToDo-Listen-Verwaltung
+  description: "We do be listing ToDos"
+  contact:
+    email: esaenger@sievers-group.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.1.0
+servers:
+- url: http://127.0.0.1:5000/
+tags:
+- name: List Management
+paths:
+  /todo-list/{list_id}:
+    get:
+      tags:
+      - List Management
+      summary: Get all items from list
+      operationId: getList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List item returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TodoEntry'
+        404:
+          description: List id not found
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+    delete:
+      tags:
+      - List Management
+      summary: Delete a list
+      operationId: deleteList
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: List was deleted
+          content: {}
+        404:
+          description: List id not found
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+
+  /todo-list:
+    post:
+      tags:
+      - List Management
+      summary: Add new list
+      operationId: addList
+      requestBody:
+        description: list object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoList'
+        required: true
+      responses:
+        201:
+          description: List was added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoList'
+        406:
+          description: JSON provided is invalid
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+      x-codegen-request-body-name: body
+
+  /todo-list/{list_id}/entry:
+    post:
+      tags:
+      - Entry Management
+      summary: Add new entry
+      operationId: addEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: entry object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntry'
+        required: true
+      responses:
+        201:
+          description: Entry was added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        406:
+          description: JSON provided is invalid
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+      x-codegen-request-body-name: body
+
+  /todo-list/{list_id}/entry/{entry_id}:
+    patch:
+      tags:
+      - Entry Management
+      summary: Update an existing entry
+      operationId: updateEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+
+      - name: entry_id
+        in: path
+        description: entry id
+        required: true
+        schema:
+          type: string
+  
+      requestBody:
+        description: entry object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TodoEntry'
+        required: true
+      responses:
+        200:
+          description: Entry was updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TodoEntry'
+        406:
+          description: JSON provided is invalid
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+      x-codegen-request-body-name: body
+
+    delete:
+      tags:
+      - Entry Management
+      summary: Delete an existing entry
+      operationId: deleteEntry
+      parameters:
+      - name: list_id
+        in: path
+        description: list id
+        required: true
+        schema:
+          type: string
+
+      - name: entry_id
+        in: path
+        description: entry id
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Entry was deleted
+          content: {}
+        404:
+          description: Entry ID could not be found
+          content: {}
+        500:
+          description: Server issues have occured
+          content: {}
+
+
+
+
+components:
+  schemas:
+    TodoList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    TodoEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        user_id:
+          type: string
+          format: uuid
+        list_id:
+          type: string
+          format: uuid
