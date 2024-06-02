@@ -40,7 +40,7 @@ Um die Web-App auf einem Raspberry Pi bereitzustellen, wird Docker verwendet. Fo
 
 3. **Bereitstellung der Web-App**
 
-    - Kopieren Sie alle Dateien des Repositories, einschließlich der docker-compose.yml, auf die Micro-SD-Karte.
+    - Kopieren Sie den Ordner 'project_webserver', einschließlich der docker-compose.yml, auf die Micro-SD-Karte.
     - Setzen Sie die Micro-SD-Karte in den Raspberry Pi ein und starten Sie ihn. Wechseln Sie über den Befehl cd in das Verzeichnis, das die docker-compose.yml Datei enthält, und führen Sie, um die Web-App im Hintergrund zu starten, den folgenden Befehl aus:
 
     sudo docker-compose up -d
